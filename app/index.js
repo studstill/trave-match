@@ -10,13 +10,6 @@ import OriginInput from './js/components/origin_input/Origin.js';
 import Destinations from './js/components/random_destinations/Destinations.js';
 
 const App = React.createClass({
-  // getInitialState() {
-  //   return {
-  //     city: "Departure City",
-  //     departureDate: '',
-  //     arrivalDate: ''
-  //   };
-  // },
   render() {
     return (
       <div className="container-fluid">
@@ -29,7 +22,7 @@ const App = React.createClass({
 
 render((
   <Router>
-    <Route name='home' path="/" component={App} city="Seattle">
+    <Route name='home' path="/" component={App}>
     <IndexRoute component={OriginInput} />
       <Route path="origin_input" component={OriginInput} />
       <Route path="random_destinations" component={Destinations} />

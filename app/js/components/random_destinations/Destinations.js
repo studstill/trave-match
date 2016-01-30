@@ -29,7 +29,7 @@ const Destinations = React.createClass({
       .query({query: origin})
       .query({apikey: 'SuINAWM3vE20Wu3VIA34vOo4vwaAbAob'})
       .end(function(err, res){
-        console.log(res.body.sr[0].a);
+        let resOrigin = res.body.sr[0].f.split(',').splice(0,2).join(", ");
         request.get('http://terminal2.expedia.com/x/mflights/search')
         .query({departureAirport: res.body.sr[0].a})
         .query({arrivalAirport: destinationAirport})
@@ -38,10 +38,12 @@ const Destinations = React.createClass({
         .query({apikey: 'ESpXK3DA92kgATR3C1XizKvruPJ2GYbu'})
         .end(function(err, res) {
           let resObj = JSON.parse(res.text);
+          console.log(resObj);
           console.log(resObj.offers[0]);
           component.setState({
             destinationAirport: destinationAirport,
-            price: resObj.offers[0].baseFare
+            price: resObj.offers[0].baseFare,
+            origin: resOrigin
           });
         })
       });
