@@ -7,11 +7,13 @@ import {Router, Route, RouteHandler, Link, DefaultRoute, NotFoundRoute} from 're
 const Header = React.createClass({
   render() {
     return (
-      <header className="nav">
-        This is the Header ---
-        <Link to={'/origin_input'}>- Point of Origin -</Link>
-        <Link to={'/random_destinations'}>- Random Destinations-</Link>
-      </header>
+      <nav className="navbar nav-tabs">
+        <a class="navbar-brand" href="#">
+        <img alt="Brand" src="/app/images/logo.svg"></img>
+        </a>
+        <Link to={'/origin_input'}  className="btn btn-default navbar-btn">Search</Link>
+        <Link to={'/random_destinations'} className="btn btn-default navbar-btn">Destination</Link>
+      </nav>
     );
   }
 });
