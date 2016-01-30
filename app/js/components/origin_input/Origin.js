@@ -64,14 +64,18 @@ var Input = React.createClass({
 });
 
 var Output = React.createClass({
+  handleClick: function(){
+    localStorage.setItem("city", this.props.city);
+    localStorage.setItem("departureDate", this.props.departureDate);
+    localStorage.setItem("arrivalDate", this.props.arrivalDate);
+  },
   render: function(){
     return (
       <div className="row">
-        <h1>{this.props.city}</h1>
-        <div >departing</div><div >returning</div>
+        <div>departing</div><div >returning</div>
         <input type="text" value={(new Date(this.props.departureDate)).toString().slice(0,15)}></input>
         <input type="text" value={(new Date(this.props.arrivalDate)).toString().slice(0,15)}></input>
-        <Link to={'/random_destinations'}>- Random Destinations-</Link>
+        <button onClick={this.handleClick}><Link to={'/random_destinations'}>Search</Link></button>
       </div>
     )
   }
