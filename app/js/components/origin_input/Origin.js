@@ -16,8 +16,8 @@ const Origin = React.createClass({
   },
   handleDateRange: function(value) {
     this.setState({
-      departureDate: value.startDate._d,
-      arrivalDate: value.endDate._d
+      departureDate: value.startDate._d.toISOString().slice(0,10),
+      arrivalDate: value.endDate._d.toISOString().slice(0,10)
     });
     console.log(value);
   },
@@ -56,6 +56,7 @@ var Input = React.createClass({
           calendars="1"
           onInit={this.handleDateRange}
           onChange={this.handleDateRange}
+          className="container-fluid"
         />
       </div>
     )
@@ -65,10 +66,11 @@ var Input = React.createClass({
 var Output = React.createClass({
   render: function(){
     return (
-      <div>
+      <div className="row">
         <h1>{this.props.city}</h1>
-        <h2>Departure Date: {this.props.departureDate.toString()}</h2>
-        <h2>Arrival Date: {this.props.arrivalDate.toString()}</h2>
+        <div >departing</div><div >returning</div>
+        <input type="text" value={(new Date(this.props.departureDate)).toString().slice(0,15)}></input>
+        <input type="text" value={(new Date(this.props.arrivalDate)).toString().slice(0,15)}></input>
         <Link to={'/random_destinations'}>- Random Destinations-</Link>
       </div>
     )
