@@ -70,6 +70,14 @@
 
 	var App = _react2.default.createClass({
 	  displayName: 'App',
+
+	  // getInitialState() {
+	  //   return {
+	  //     city: "Departure City",
+	  //     departureDate: '',
+	  //     arrivalDate: ''
+	  //   };
+	  // },
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
@@ -87,7 +95,7 @@
 	  null,
 	  _react2.default.createElement(
 	    _reactRouter.Route,
-	    { name: 'home', path: '/', component: App },
+	    { name: 'home', path: '/', component: App, city: 'Seattle' },
 	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _Origin2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'origin_input', component: _Origin2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'random_destinations', component: _Destinations2.default })
@@ -24164,6 +24172,11 @@
 	var Output = _react2.default.createClass({
 	  displayName: 'Output',
 
+	  handleClick: function handleClick() {
+	    localStorage.setItem("city", this.props.city);
+	    localStorage.setItem("departureDate", this.props.departureDate);
+	    localStorage.setItem("arrivalDate", this.props.arrivalDate);
+	  },
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
@@ -24186,9 +24199,13 @@
 	      _react2.default.createElement('input', { type: 'text', value: new Date(this.props.departureDate).toString().slice(0, 15) }),
 	      _react2.default.createElement('input', { type: 'text', value: new Date(this.props.arrivalDate).toString().slice(0, 15) }),
 	      _react2.default.createElement(
-	        _reactRouter.Link,
-	        { to: '/random_destinations' },
-	        '- Random Destinations-'
+	        'button',
+	        { onClick: this.handleClick },
+	        _react2.default.createElement(
+	          _reactRouter.Link,
+	          { to: '/random_destinations' },
+	          'Search'
+	        )
 	      )
 	    );
 	  }
@@ -38363,21 +38380,21 @@
 	  displayName: 'Destinations',
 	  getInitialState: function getInitialState() {
 	    return {
-	      // point of origin
-	      poi: 'SEA',
-	      departureDate: '',
-	      returnDate: '',
-	      firstListed: ''
+
+	      origin: localStorage.getItem("city"),
+	      departureDate: localStorage.getItem("departureDate"),
+	      returnDate: localStorage.getItem("arrivalDate"),
+	      destination: ''
 	    };
 	  },
 	  newRandDest: function newRandDest() {
 	    // Check to make sure that the destination not the origin
 	    this.setState({
-	      poi: _destinationArray2.default[Math.floor(Math.random() * _destinationArray2.default.length - 1)]
+	      destination: _destinationArray2.default[Math.floor(Math.random() * _destinationArray2.default.length - 1)]
 	    });
 	  },
 	  getFlightInfo: function getFlightInfo() {
-	    _superagent2.default.get('http://terminal2.expedia.com/x/mflights/search').query({ departureAirport: this.state.poi }).query({ arrivalAirport: 'ATL' }).query({ departureDate: '2016-2-1' }).query({ apikey: 'ESpXK3DA92kgATR3C1XizKvruPJ2GYbu' }).end(function (err, res) {
+	    _superagent2.default.get('http://terminal2.expedia.com/x/mflights/search').query({ departureAirport: "SEA" }).query({ arrivalAirport: 'ATL' }).query({ departureDate: '2016-2-1' }).query({ apikey: 'ESpXK3DA92kgATR3C1XizKvruPJ2GYbu' }).end(function (err, res) {
 	      var resObj = JSON.parse(res.text);
 	      console.log(resObj.offers[0]);
 	      // console.log(resObj.offers[0].baseFare);
@@ -38397,15 +38414,28 @@
 	      'div',
 	      null,
 	      _react2.default.createElement(
-	        'h1',
+	        'h3',
 	        null,
-	        'This the Destinations Section'
+	        'Origin: ',
+	        this.state.origin
+	      ),
+	      _react2.default.createElement(
+	        'h3',
+	        null,
+	        'Departure Date: ',
+	        this.state.departureDate
+	      ),
+	      _react2.default.createElement(
+	        'h3',
+	        null,
+	        'Return Date: ',
+	        this.state.returnDate
 	      ),
 	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'Random destination: ',
-	        this.state.poi
+	        this.state.origin
 	      ),
 	      _react2.default.createElement(
 	        'button',
