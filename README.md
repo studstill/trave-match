@@ -1,3 +1,1 @@
-This is a repo for creating pokemon cards.
-
-Hello -goutham
+This is a repo for containing project for the 2016 Seattle Expedia Hack-a-thon
