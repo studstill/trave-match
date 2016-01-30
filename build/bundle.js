@@ -24182,11 +24182,6 @@
 	      'div',
 	      { className: 'row' },
 	      _react2.default.createElement(
-	        'h1',
-	        null,
-	        this.props.city
-	      ),
-	      _react2.default.createElement(
 	        'div',
 	        null,
 	        'departing'
@@ -38380,34 +38375,34 @@
 	  displayName: 'Destinations',
 	  getInitialState: function getInitialState() {
 	    return {
-
 	      origin: localStorage.getItem("city"),
 	      departureDate: localStorage.getItem("departureDate"),
 	      returnDate: localStorage.getItem("arrivalDate"),
-	      destination: ''
+	      destination: '',
+	      originAirport: "",
+	      destinationAirport: "",
+	      price: "loading price..."
 	    };
 	  },
-	  newRandDest: function newRandDest() {
-	    // Check to make sure that the destination not the origin
-	    this.setState({
-	      destination: _destinationArray2.default[Math.floor(Math.random() * _destinationArray2.default.length - 1)]
-	    });
-	  },
-	  getFlightInfo: function getFlightInfo() {
-	    _superagent2.default.get('http://terminal2.expedia.com/x/mflights/search').query({ departureAirport: "SEA" }).query({ arrivalAirport: 'ATL' }).query({ departureDate: '2016-2-1' }).query({ apikey: 'ESpXK3DA92kgATR3C1XizKvruPJ2GYbu' }).end(function (err, res) {
-	      var resObj = JSON.parse(res.text);
-	      console.log(resObj.offers[0]);
-	      // console.log(resObj.offers[0].baseFare);
-	      // this.setState({
-	      //   firstListed: resObj.offers[0]
-	      // })
-	      // for (let index in resObj.offers) { console.log(res.text[index])};
-	    });
-	  },
 	  componentDidMount: function componentDidMount() {
-	    this.newRandDest();
-	    this.getFlightInfo();
-	    // this.getFlightInfo();
+	    var destinationAirport = _destinationArray2.default[Math.floor(Math.random() * _destinationArray2.default.length - 1)];
+	    var origin = this.state.origin;
+	    var departDate = this.state.departureDate;
+	    var retDate = this.state.returnDate;
+	    var price = this.state.price;
+	    var component = this;
+	    console.log(departDate);
+	    _superagent2.default.get("http://terminal2.expedia.com/x/suggestions/flights?").query({ query: origin }).query({ apikey: 'SuINAWM3vE20Wu3VIA34vOo4vwaAbAob' }).end(function (err, res) {
+	      console.log(res.body.sr[0].a);
+	      _superagent2.default.get('http://terminal2.expedia.com/x/mflights/search').query({ departureAirport: res.body.sr[0].a }).query({ arrivalAirport: destinationAirport }).query({ departureDate: departDate }).query({ returnDate: retDate }).query({ apikey: 'ESpXK3DA92kgATR3C1XizKvruPJ2GYbu' }).end(function (err, res) {
+	        var resObj = JSON.parse(res.text);
+	        console.log(resObj.offers[0]);
+	        component.setState({
+	          destinationAirport: destinationAirport,
+	          price: resObj.offers[0].baseFare
+	        });
+	      });
+	    });
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
@@ -38432,10 +38427,16 @@
 	        this.state.returnDate
 	      ),
 	      _react2.default.createElement(
-	        'h2',
+	        'h3',
 	        null,
-	        'Random destination: ',
-	        this.state.origin
+	        'Destination: ',
+	        this.state.destinationAirport
+	      ),
+	      _react2.default.createElement(
+	        'h3',
+	        null,
+	        'Price: ',
+	        this.state.price
 	      ),
 	      _react2.default.createElement(
 	        'button',

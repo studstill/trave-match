@@ -72,8 +72,7 @@ var Output = React.createClass({
   render: function(){
     return (
       <div className="row">
-        <h1>{this.props.city}</h1>
-        <div >departing</div><div >returning</div>
+        <div>departing</div><div >returning</div>
         <input type="text" value={(new Date(this.props.departureDate)).toString().slice(0,15)}></input>
         <input type="text" value={(new Date(this.props.arrivalDate)).toString().slice(0,15)}></input>
         <button onClick={this.handleClick}><Link to={'/random_destinations'}>Search</Link></button>
