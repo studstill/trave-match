@@ -1,13 +1,13 @@
 {
-  "name": "pokemon_app",
+  "name": "travel_match",
   "version": "0.0.0",
-  "description": "demo app",
+  "description": "expedia hackathon",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server"
   },
-  "author": "",
+  "author": "Jason Studstill, Goutham Reddy",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.3.26",
@@ -25,7 +25,6 @@
     "history": "^1.17.0",
     "react": "^0.14.5",
     "react-date-range": "^0.2.2",
-    "react-daterange-picker": "^1.0.0",
     "react-dom": "^0.14.5",
     "react-router": "^1.0.3",
     "superagent": "^1.7.2"
