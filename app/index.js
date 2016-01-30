@@ -9,8 +9,9 @@ import Header from './js/components/header/Header.js';
 import OriginInput from './js/components/origin_input/Origin.js';
 import Destinations from './js/components/random_destinations/Destinations.js';
 
-const App = React.createClass({
-  render() {
+var App = React.createClass({
+
+  render: function() {
     return (
       <div className="container-fluid">
         <Header className="row"/>
