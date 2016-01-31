@@ -24,8 +24,9 @@ const Destinations = React.createClass({
   },
 
   getRandomDestination() {
-    return new Promise(() => {
+    return new Promise((resolve, reject) => {
       let destinationObj = destinationArray[Math.floor(Math.random() * destinationArray.length - 1)];
+      console.log('random destination airport: ' + destinationObj["airportCode"]);
       this.setState({
         destinationAirport: destinationObj["airportCode"],
         destination: destinationObj["cityName"]
@@ -35,36 +36,29 @@ const Destinations = React.createClass({
 
   clarifySearchQuery(callback) {
     return new Promise(() => {
-      request.get("http://terminal2.expedia.com/x/suggestions/flights?")
-        .query({query: this.state.origin})
-        .query({apikey: 'SuINAWM3vE20Wu3VIA34vOo4vwaAbAob'})
+      request.get('/api/suggestions_and_resolutions/' + this.state.origin)
         .end(function(err, res){
+          console.log('the origin airport is ' + JSON.parse(res.text).a);
+          console.log('the origin is ' + JSON.parse(res.text).f.split(',').splice(0,2).join(", "));
           this.setState({
-            originAirport: res.body.sr[0].a,
-            origin: res.body.sr[0].f.split(',').splice(0,2).join(", ")
+            originAirport: JSON.parse(res.text).a,
+            origin: JSON.parse(res.text).f.split(',').splice(0,2).join(", ")
           });
         }.bind(this));
     });
   },
 
   fetchFlightInfo() {
-    return new Promise(() => {
-      console.log('this is the destination: ' + this.state.destination);
-      console.log('destinationAirport: ' + this.state.destinationAirport);
-      console.log('departDate: ' + this.state.departureDate);
-      console.log('retDate: ' + this.state.returnDate);
-      request.get('http://terminal2.expedia.com/x/mflights/search')
-        .query({departureAirport: this.state.originAirport})
-        .query({arrivalAirport: this.state.destinationAirport})
-        .query({departureDate: this.state.departureDate})
-        .query({returnDate: this.state.returnDate})
-        .query({apikey: 'ESpXK3DA92kgATR3C1XizKvruPJ2GYbu'})
+      request.get(`/api/flight_search/departureAirport=${this.state.originAirport}&arrivalAirport=${this.state.destinationAirport}&departureDate=${this.state.departureDate}&returnDate=${this.state.returnDate}`)
         .end(function(err, res) {
+          console.log('got fetchFlightInfo');
           if (res) {
+            console.log(res);
             let resObj = JSON.parse(res.text);
+            console.log(resObj);
             // If there is no available flight given the input, the compenent
             // is re-rendered to search for new options
-            if (!resObj.offers[0] || !resObj.offers[0].totalFare) {
+            if (!resObj.offers || !resObj.offers[0] || !resObj.offers[0].totalFare) {
               this.forceUpdate();
             } else {
               // Sort and return lowest fare
@@ -80,7 +74,6 @@ const Destinations = React.createClass({
             this.forceUpdate();
           }
       }.bind(this));
-    });
   },
 
   resetFlightPrice() {
@@ -93,9 +86,9 @@ const Destinations = React.createClass({
 
   searchNewDestination() {
     this.resetFlightPrice()
-      .then(this.getRandomDestination()
-        .then(this.fetchFlightInfo()));
-    ;
+      .then(this.getRandomDestination());
+    window.setTimeout(this.fetchFlightInfo, 100);
+        // (this.fetchFlightInfo()
   },
 
   formatSearchQueriesForWeb() {
@@ -127,61 +120,12 @@ const Destinations = React.createClass({
     this.getRandomDestination()
       .then(this.clarifySearchQuery());
     this.formatSearchQueriesForWeb();
+    this.searchNewDestination();
   },
 
   componentDidMount(){
-    console.log('this is the destination: ' + this.state.destination);
-    let origin = this.state.origin;
-    let destination = this.state.destination;
-    let destinationAirport = this.state.destinationAirport;
-    let departDate = this.state.departureDate;
-    let retDate = this.state.returnDate;
-    let price = this.state.price;
-    let component = this;
-    console.log('destinationAirport: ' + destinationAirport);
-    console.log('departDate: ' + departDate);
-    console.log('retDate: ' + retDate);
-
-    request.get("http://terminal2.expedia.com/x/suggestions/flights?")
-      .query({query: origin})
-      .query({apikey: 'SuINAWM3vE20Wu3VIA34vOo4vwaAbAob'})
-      .end(function(err, res){
-        let resOrigin = res.body.sr[0].f.split(',').splice(0,2).join(", ");
-        request.get('http://terminal2.expedia.com/x/mflights/search')
-        .query({departureAirport: res.body.sr[0].a})
-        .query({arrivalAirport: destinationAirport})
-        .query({departureDate: departDate})
-        .query({returnDate: retDate})
-        .query({apikey: 'ESpXK3DA92kgATR3C1XizKvruPJ2GYbu'})
-        .end(function(err, res) {
-          if (res) {
-            let resObj = JSON.parse(res.text);
-            console.log(resObj);
-            // If there is no available flight given the input, the compenent
-            // is re-rendered to search for new options
-            if (!resObj.offers[0] || !resObj.offers[0].totalFare) {
-              component.forceUpdate();
-            } else {
-              let lowestFareFirst = resObj.offers.sort((a, b) => {
-                return a.totalFare - b.totalFare;
-              });
-              component.setState({
-                destinationAirport: destinationAirport,
-                destination: destination,
-                price: lowestFareFirst[0].totalFare,
-                origin: resOrigin,
-                detailsUrl: lowestFareFirst[0].detailsUrl
-              });
-            }
-          } else {
-            component.forceUpdate();
-          }
-        })
-      });
+    this.searchNewDestination();
   },
-
-
-
 
   render() {
     let webLink = `https://www.expedia.com/Flights-Search?mode=search&leg1=from:${this.state.origin},to:${this.state.destinationAirport},departure:${this.state.webFormatedDepartureDate}TANYT&trip=roundtrip&leg2=from:${this.state.destinationAirport},to:${this.state.originAirport},departure:${this.state.webFormatedReturnDate}TANYT&passengers=children:0,adults:1,infantinlap:Y&options=cabinclass:economy&origref=www.expedia.com%2FFlight-Search-All`;
@@ -193,8 +137,8 @@ const Destinations = React.createClass({
         <h3>Return Date: {this.state.returnDate}</h3>
         <h3>Destination: {this.state.destination}</h3>
         <h3>Price: {this.state.price}</h3>
-        <button onClick={this.searchNewDestination}>New Destination</button>
-        <a href={this.state.detailsUrl} target="_blank">Book Now</a>
+        <button onClick={this.searchNewDestination} className="btn btn-default">New Destination</button>
+        <a href={this.state.detailsUrl} target="_blank" className="btn btn-default">Book Now</a>
         <ThingsToDo location={this.state.destination}
                     departureDate={this.state.startDate}
                     returnDate={this.state.returnDate}
