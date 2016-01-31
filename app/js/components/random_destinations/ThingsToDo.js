@@ -19,30 +19,30 @@ const ThingsToDo = React.createClass({
   },
 
   componentDidMount(){
-    // let component = this;
+    let component = this;
     request.get("http://terminal2.expedia.com:80/x/activities/search?")
-      .query({location: this.props.destination})
+      .query({location: this.props.location})
       .query({startDate: this.props.departureDate})
       .query({endDate: this.props.returnDate})
       .query({apikey: 'SuINAWM3vE20Wu3VIA34vOo4vwaAbAob'})
       .end(function(err, res){
         console.log("hello");
         console.log(res);
-        // component.setState({
-        //   todos: res.body.activities
-        // });
+        component.setState({
+           todos: res.body.activities
+        });
     });
   },
 
   render() {
-    // var cards = this.state.todos.map(function(todo){
-    //   return (<Card title={todo.title} url={todo.url} />)
-    // });
+    var cards = this.state.todos.map(function(todo){
+       return (<Card title={todo.title} url={todo.imageUrl} />);
+    });
     return (
        <div>
-        <Card url="http://www.tehcute.com/pics/201109/corgi-puppy-on-a-couch.jpg" title="Hello" />
+        {cards}
        </div>
-    )
+    );
   }
 });
 
