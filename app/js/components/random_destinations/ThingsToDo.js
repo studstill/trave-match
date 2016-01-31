@@ -4,9 +4,10 @@ import request from 'superagent';
 const Card = React.createClass({
   render: function(){
     return (
-      <div>
-        <img src={this.props.url} width="80" />
-        <h3>{this.props.title}</h3>
+      <div className="row">
+        <img className="col-md-3" src={this.props.url} width="100" />
+        <h6 className="col-md-6">{this.props.title}</h6>
+        <h6 className="col-md-3">from: {this.props.fromPrice}</h6>
       </div>
     )
   }
@@ -15,11 +16,12 @@ const Card = React.createClass({
 const ThingsToDo = React.createClass({
 
   getInitialState() {
-    return {todos: []};
+    return ({todos: []})
   },
 
   componentDidMount(){
     let component = this;
+    console.log(this.props.location);
     request.get("http://terminal2.expedia.com:80/x/activities/search?")
       .query({location: this.props.location})
       .query({startDate: this.props.departureDate})
@@ -36,7 +38,7 @@ const ThingsToDo = React.createClass({
 
   render() {
     var cards = this.state.todos.map(function(todo){
-       return (<Card title={todo.title} url={todo.imageUrl} />);
+       return (<Card title={todo.title} url={todo.imageUrl} fromPrice={todo.fromPrice} />);
     });
     return (
        <div>

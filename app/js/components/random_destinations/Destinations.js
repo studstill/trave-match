@@ -126,7 +126,7 @@ const Destinations = React.createClass({
     this.getRandomDestination()
       .then(this.clarifySearchQuery());
     this.formatSearchQueriesForWeb();
-    this.searchNewDestination();
+    // this.searchNewDestination();
   },
 
   componentDidMount(){
@@ -150,7 +150,7 @@ const Destinations = React.createClass({
         <button onClick={this.searchNewDestination} className="btn btn-default glyphicon glyphicon-remove"></button>
         <a href={this.state.detailsUrl} target="_blank" ><button className="btn btn-default">Book Now</button></a>
         <ThingsToDo location={this.state.destination}
-                    departureDate={this.state.startDate}
+                    departureDate={this.state.departureDate}
                     returnDate={this.state.returnDate}
                     />
       </div>
