@@ -27,7 +27,6 @@ const Destinations = React.createClass({
   },
 
   getRandomDestination() {
-    return new Promise((resolve, reject) => {
       let destinationObj = destinationArray[Math.floor(Math.random() * destinationArray.length - 1)];
       console.log('random destination airport: ' + destinationObj["airportCode"]);
       this.setState({
@@ -37,11 +36,9 @@ const Destinations = React.createClass({
         destinationImgAlt: destinationObj["imgDescription"],
         destinationInfo: destinationObj["cityDescription"]
       });
-    });
   },
 
   clarifySearchQuery(callback) {
-    return new Promise(() => {
       request.get('/api/suggestions_and_resolutions/' + this.state.origin)
         .end(function(err, res){
           console.log('the origin airport is ' + JSON.parse(res.text).a);
@@ -51,7 +48,6 @@ const Destinations = React.createClass({
             origin: JSON.parse(res.text).f.split(',').splice(0,2).join(", ")
           });
         }.bind(this));
-    });
   },
 
   fetchFlightInfo() {
@@ -83,18 +79,18 @@ const Destinations = React.createClass({
   },
 
   resetFlightPrice() {
-    return new Promise(() => {
       this.setState({
         price: 'Loading price...'
       });
-    });
   },
 
   searchNewDestination() {
-    this.resetFlightPrice()
-      .then(this.getRandomDestination());
+    window.setTimeout(this.resetFlightPrice(), 0);
+    window.setTimeout(this.getRandomDestination(), 0);
+    window.setTimeout(this.getRandomDestination(), 0);
+    window.setTimeout(this.clarifySearchQuery(), 0);
+    window.setTimeout(this.formatSearchQueriesForWeb(), 0);
     window.setTimeout(this.fetchFlightInfo, 100);
-        // (this.fetchFlightInfo()
   },
 
   formatSearchQueriesForWeb() {
@@ -123,14 +119,16 @@ const Destinations = React.createClass({
   },
 
   componentWillMount() {
-    this.getRandomDestination()
-      .then(this.clarifySearchQuery());
-    this.formatSearchQueriesForWeb();
-    // this.searchNewDestination();
+    window.setTimeout(this.resetFlightPrice(), 0);
+    window.setTimeout(this.getRandomDestination(), 0);
+    window.setTimeout(this.getRandomDestination(), 0);
+    window.setTimeout(this.clarifySearchQuery(), 0);
+    window.setTimeout(this.formatSearchQueriesForWeb(), 0);
+    window.setTimeout(this.fetchFlightInfo, 100);
   },
 
   componentDidMount(){
-    this.searchNewDestination();
+    // this.searchNewDestination();
   },
 
   render() {

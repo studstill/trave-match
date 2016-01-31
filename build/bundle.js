@@ -38535,33 +38535,25 @@
 	    };
 	  },
 	  getRandomDestination: function getRandomDestination() {
-	    var _this = this;
-
-	    return new Promise(function (resolve, reject) {
-	      var destinationObj = _destinationArray2.default[Math.floor(Math.random() * _destinationArray2.default.length - 1)];
-	      console.log('random destination airport: ' + destinationObj["airportCode"]);
-	      _this.setState({
-	        destinationAirport: destinationObj["airportCode"],
-	        destination: destinationObj["cityName"],
-	        destinationImgUrl: destinationObj["imgUrl"],
-	        destinationImgAlt: destinationObj["imgDescription"],
-	        destinationInfo: destinationObj["cityDescription"]
-	      });
+	    var destinationObj = _destinationArray2.default[Math.floor(Math.random() * _destinationArray2.default.length - 1)];
+	    console.log('random destination airport: ' + destinationObj["airportCode"]);
+	    this.setState({
+	      destinationAirport: destinationObj["airportCode"],
+	      destination: destinationObj["cityName"],
+	      destinationImgUrl: destinationObj["imgUrl"],
+	      destinationImgAlt: destinationObj["imgDescription"],
+	      destinationInfo: destinationObj["cityDescription"]
 	    });
 	  },
 	  clarifySearchQuery: function clarifySearchQuery(callback) {
-	    var _this2 = this;
-
-	    return new Promise(function () {
-	      _superagent2.default.get('/api/suggestions_and_resolutions/' + _this2.state.origin).end(function (err, res) {
-	        console.log('the origin airport is ' + JSON.parse(res.text).a);
-	        console.log('the origin is ' + JSON.parse(res.text).f.split(',').splice(0, 2).join(", "));
-	        this.setState({
-	          originAirport: JSON.parse(res.text).a,
-	          origin: JSON.parse(res.text).f.split(',').splice(0, 2).join(", ")
-	        });
-	      }.bind(_this2));
-	    });
+	    _superagent2.default.get('/api/suggestions_and_resolutions/' + this.state.origin).end(function (err, res) {
+	      console.log('the origin airport is ' + JSON.parse(res.text).a);
+	      console.log('the origin is ' + JSON.parse(res.text).f.split(',').splice(0, 2).join(", "));
+	      this.setState({
+	        originAirport: JSON.parse(res.text).a,
+	        origin: JSON.parse(res.text).f.split(',').splice(0, 2).join(", ")
+	      });
+	    }.bind(this));
 	  },
 	  fetchFlightInfo: function fetchFlightInfo() {
 	    _superagent2.default.get('/api/flight_search/departureAirport=' + this.state.originAirport + '&arrivalAirport=' + this.state.destinationAirport + '&departureDate=' + this.state.departureDate + '&returnDate=' + this.state.returnDate).end(function (err, res) {
@@ -38590,18 +38582,17 @@
 	    }.bind(this));
 	  },
 	  resetFlightPrice: function resetFlightPrice() {
-	    var _this3 = this;
-
-	    return new Promise(function () {
-	      _this3.setState({
-	        price: 'Loading price...'
-	      });
+	    this.setState({
+	      price: 'Loading price...'
 	    });
 	  },
 	  searchNewDestination: function searchNewDestination() {
-	    this.resetFlightPrice().then(this.getRandomDestination());
+	    window.setTimeout(this.resetFlightPrice(), 0);
+	    window.setTimeout(this.getRandomDestination(), 0);
+	    window.setTimeout(this.getRandomDestination(), 0);
+	    window.setTimeout(this.clarifySearchQuery(), 0);
+	    window.setTimeout(this.formatSearchQueriesForWeb(), 0);
 	    window.setTimeout(this.fetchFlightInfo, 100);
-	    // (this.fetchFlightInfo()
 	  },
 	  formatSearchQueriesForWeb: function formatSearchQueriesForWeb() {
 	    var webFormatedDepartureDate = [];
@@ -38627,12 +38618,15 @@
 	    });
 	  },
 	  componentWillMount: function componentWillMount() {
-	    this.getRandomDestination().then(this.clarifySearchQuery());
-	    this.formatSearchQueriesForWeb();
-	    // this.searchNewDestination();
+	    window.setTimeout(this.resetFlightPrice(), 0);
+	    window.setTimeout(this.getRandomDestination(), 0);
+	    window.setTimeout(this.getRandomDestination(), 0);
+	    window.setTimeout(this.clarifySearchQuery(), 0);
+	    window.setTimeout(this.formatSearchQueriesForWeb(), 0);
+	    window.setTimeout(this.fetchFlightInfo, 100);
 	  },
 	  componentDidMount: function componentDidMount() {
-	    this.searchNewDestination();
+	    // this.searchNewDestination();
 	  },
 	  render: function render() {
 	    var webLink = 'https://www.expedia.com/Flights-Search?mode=search&leg1=from:' + this.state.origin + ',to:' + this.state.destinationAirport + ',departure:' + this.state.webFormatedDepartureDate + 'TANYT&trip=roundtrip&leg2=from:' + this.state.destinationAirport + ',to:' + this.state.originAirport + ',departure:' + this.state.webFormatedReturnDate + 'TANYT&passengers=children:0,adults:1,infantinlap:Y&options=cabinclass:economy&origref=www.expedia.com%2FFlight-Search-All';
@@ -40668,9 +40662,11 @@
 	    _superagent2.default.get("http://terminal2.expedia.com:80/x/activities/search?").query({ location: this.props.location }).query({ startDate: this.props.departureDate }).query({ endDate: this.props.returnDate }).query({ apikey: 'SuINAWM3vE20Wu3VIA34vOo4vwaAbAob' }).end(function (err, res) {
 	      console.log("hello");
 	      console.log(res);
-	      component.setState({
-	        todos: res.body.activities
-	      });
+	      if (!res.body.searchFailure) {
+	        component.setState({
+	          todos: res.body.activities
+	        });
+	      }
 	    });
 	  },
 	  render: function render() {

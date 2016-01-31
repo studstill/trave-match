@@ -30,9 +30,11 @@ const ThingsToDo = React.createClass({
       .end(function(err, res){
         console.log("hello");
         console.log(res);
-        component.setState({
-           todos: res.body.activities
-        });
+        if (!res.body.searchFailure){
+          component.setState({
+             todos: res.body.activities
+          });
+        }
     });
   },
 
