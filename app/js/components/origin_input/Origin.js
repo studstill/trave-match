@@ -87,7 +87,7 @@ var Output = React.createClass({
           <input id="return-date" className="form-control col-sm-2" type="text" value={(new Date(this.props.arrivalDate)).toString().slice(0,15)} readOnly></input>
         </div>
         <div className="form-group">
-        <button className="btn btn-default" onClick={this.handleClick}><Link to={'/random_destinations'}>Search</Link></button>
+        <Link to={'/random_destinations'}><button className="btn btn-default" onClick={this.handleClick}>Search</button></Link>
         </div>
       </form>
     )
