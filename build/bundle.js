@@ -38497,7 +38497,9 @@
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
-	    var destinationAirport = _destinationArray2.default[Math.floor(Math.random() * _destinationArray2.default.length - 1)]["airportCode"];
+	    var destinationObj = _destinationArray2.default[Math.floor(Math.random() * _destinationArray2.default.length - 1)];
+	    var destinationAirport = destinationObj["airportCode"];
+	    var destination = destinationObj["cityName"];
 	    var origin = this.state.origin;
 	    var departDate = this.state.departureDate;
 	    var retDate = this.state.returnDate;
@@ -38512,6 +38514,7 @@
 	        console.log(resObj.offers[0]);
 	        component.setState({
 	          destinationAirport: destinationAirport,
+	          destination: destination,
 	          price: resObj.offers[0].baseFare,
 	          origin: resOrigin
 	        });
@@ -38544,7 +38547,7 @@
 	        'h3',
 	        null,
 	        'Destination: ',
-	        this.state.destinationAirport
+	        this.state.destination
 	      ),
 	      _react2.default.createElement(
 	        'h3',

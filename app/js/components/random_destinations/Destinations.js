@@ -18,7 +18,9 @@ const Destinations = React.createClass({
   },
 
   componentDidMount(){
-    let destinationAirport = destinationArray[Math.floor(Math.random() * destinationArray.length - 1)]["airportCode"];
+    let destinationObj = destinationArray[Math.floor(Math.random() * destinationArray.length - 1)];
+    let destinationAirport = destinationObj["airportCode"];
+    let destination = destinationObj["cityName"];
     let origin = this.state.origin;
     let departDate = this.state.departureDate;
     let retDate = this.state.returnDate;
@@ -42,6 +44,7 @@ const Destinations = React.createClass({
           console.log(resObj.offers[0]);
           component.setState({
             destinationAirport: destinationAirport,
+            destination: destination,
             price: resObj.offers[0].baseFare,
             origin: resOrigin
           });
@@ -56,7 +59,7 @@ const Destinations = React.createClass({
         <h3>Origin: {this.state.origin}</h3>
         <h3>Departure Date: {this.state.departureDate}</h3>
         <h3>Return Date: {this.state.returnDate}</h3>
-        <h3>Destination: {this.state.destinationAirport}</h3>
+        <h3>Destination: {this.state.destination}</h3>
         <h3>Price: {this.state.price}</h3>
         <button onClick={this.newRandDest,this.getFlightInfo,this.getGoogleImage}>New Destination</button>
         <p>
