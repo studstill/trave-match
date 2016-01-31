@@ -74,7 +74,7 @@
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
-	      { className: 'container-fluid' },
+	      { className: 'container-fluid mainContainer' },
 	      _react2.default.createElement(_Header2.default, { className: 'row' }),
 	      this.props.children
 	    );
@@ -24179,17 +24179,13 @@
 	      _react2.default.createElement(
 	        'a',
 	        { className: 'navbar-brand', href: '#' },
-	        _react2.default.createElement('img', { className: 'img-responsive', alt: 'Brand', src: '/app/images/logo.svg' })
+	        'Travel>Match> powered by',
+	        _react2.default.createElement('img', { className: 'img-responsive expediaLogo', alt: 'Brand', src: '/app/images/logo.svg' })
 	      ),
 	      _react2.default.createElement(
 	        _reactRouter.Link,
 	        { to: '/origin_input', className: 'btn btn-default navbar-btn' },
 	        'Home'
-	      ),
-	      _react2.default.createElement(
-	        _reactRouter.Link,
-	        { to: '/random_destinations', className: 'btn btn-default navbar-btn' },
-	        'Destination'
 	      )
 	    );
 	  }
@@ -24305,38 +24301,42 @@
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'form',
-	      { className: 'form-horizontal' },
+	      'div',
+	      { className: 'dateBoxes' },
 	      _react2.default.createElement(
-	        'div',
-	        { className: 'form-group' },
+	        'form',
+	        { className: 'form-horizontal' },
 	        _react2.default.createElement(
-	          'label',
-	          { 'for': 'departure-date', 'class': 'col-sm-2 control-label' },
-	          'Departing on:'
-	        ),
-	        _react2.default.createElement('input', { id: 'departure-date', className: 'form-control col-sm-2', type: 'text', value: new Date(this.props.departureDate).toString().slice(0, 15), readOnly: true })
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'form-group' },
-	        _react2.default.createElement(
-	          'label',
-	          { 'for': 'return-date', 'class': 'col-sm-2 control-label' },
-	          'Returning on:'
-	        ),
-	        _react2.default.createElement('input', { id: 'return-date', className: 'form-control col-sm-2', type: 'text', value: new Date(this.props.arrivalDate).toString().slice(0, 15), readOnly: true })
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'form-group' },
-	        _react2.default.createElement(
-	          _reactRouter.Link,
-	          { to: '/random_destinations' },
+	          'div',
+	          { className: 'form-group' },
 	          _react2.default.createElement(
-	            'button',
-	            { className: 'btn btn-default', onClick: this.handleClick },
-	            'Search'
+	            'label',
+	            { 'for': 'departure-date', className: 'control-label' },
+	            'Departing on:'
+	          ),
+	          _react2.default.createElement('input', { id: 'departure-date', className: 'dateBox form-control col-sm-2', type: 'text', value: new Date(this.props.departureDate).toString().slice(0, 15), readOnly: true })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          _react2.default.createElement(
+	            'label',
+	            { 'for': 'return-date', className: 'control-label' },
+	            'Returning on:'
+	          ),
+	          _react2.default.createElement('input', { id: 'return-date', className: 'dateBox form-control col-sm-2', type: 'text', value: new Date(this.props.arrivalDate).toString().slice(0, 15), readOnly: true })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: '/random_destinations' },
+	            _react2.default.createElement(
+	              'button',
+	              { className: 'btn btn-default', onClick: this.handleClick },
+	              'Search'
+	            )
 	          )
 	        )
 	      )
@@ -38521,6 +38521,9 @@
 	      originAirport: "",
 	      destination: '',
 	      destinationAirport: "",
+	      destinationImgUrl: '',
+	      destinationImgAlt: '',
+	      destinationInfo: '',
 	      departureDate: localStorage.getItem("departureDate"),
 	      webFormatedDepartureDate: '',
 	      returnDate: localStorage.getItem("arrivalDate"),
@@ -38539,7 +38542,10 @@
 	      console.log('random destination airport: ' + destinationObj["airportCode"]);
 	      _this.setState({
 	        destinationAirport: destinationObj["airportCode"],
-	        destination: destinationObj["cityName"]
+	        destination: destinationObj["cityName"],
+	        destinationImgUrl: destinationObj["imgUrl"],
+	        destinationImgAlt: destinationObj["imgDescription"],
+	        destinationInfo: destinationObj["cityDescription"]
 	      });
 	    });
 	  },
@@ -38637,42 +38643,52 @@
 	      _react2.default.createElement(
 	        'h3',
 	        null,
+	        'Destination: ',
+	        this.state.destination
+	      ),
+	      _react2.default.createElement('img', { src: this.state.destinationImgUrl, alt: this.state.destinationImgAlt, className: 'cityImage' }),
+	      _react2.default.createElement(
+	        'section',
+	        { className: 'cityInfo' },
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          this.state.destinationInfo
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'h4',
+	        null,
+	        'Cheapest Flight: ',
+	        this.state.price
+	      ),
+	      _react2.default.createElement(
+	        'h5',
+	        null,
 	        'Origin: ',
 	        this.state.origin
 	      ),
 	      _react2.default.createElement(
-	        'h3',
+	        'h5',
 	        null,
 	        'Departure Date: ',
 	        this.state.departureDate
 	      ),
 	      _react2.default.createElement(
-	        'h3',
+	        'h5',
 	        null,
 	        'Return Date: ',
 	        this.state.returnDate
 	      ),
-	      _react2.default.createElement(
-	        'h3',
-	        null,
-	        'Destination: ',
-	        this.state.destination
-	      ),
-	      _react2.default.createElement(
-	        'h3',
-	        null,
-	        'Price: ',
-	        this.state.price
-	      ),
-	      _react2.default.createElement(
-	        'button',
-	        { onClick: this.searchNewDestination, className: 'btn btn-default' },
-	        'New Destination'
-	      ),
+	      _react2.default.createElement('button', { onClick: this.searchNewDestination, className: 'btn btn-default glyphicon glyphicon-remove' }),
 	      _react2.default.createElement(
 	        'a',
-	        { href: this.state.detailsUrl, target: '_blank', className: 'btn btn-default' },
-	        'Book Now'
+	        { href: this.state.detailsUrl, target: '_blank' },
+	        _react2.default.createElement(
+	          'button',
+	          { className: 'btn btn-default' },
+	          'Book Now'
+	        )
 	      ),
 	      _react2.default.createElement(_ThingsToDo2.default, { location: this.state.destination,
 	        departureDate: this.state.startDate,
