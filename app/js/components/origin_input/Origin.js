@@ -77,19 +77,21 @@ var Output = React.createClass({
   },
   render: function(){
     return (
-      <form className="form-horizontal">
-        <div className="form-group">
-          <label for="departure-date" class="col-sm-2 control-label">Departing on:</label>
-          <input id="departure-date" className="form-control col-sm-2" type="text" value={(new Date(this.props.departureDate)).toString().slice(0,15)} readOnly></input>
-        </div>
-        <div className="form-group">
-          <label for="return-date" class="col-sm-2 control-label">Returning on:</label>
-          <input id="return-date" className="form-control col-sm-2" type="text" value={(new Date(this.props.arrivalDate)).toString().slice(0,15)} readOnly></input>
-        </div>
-        <div className="form-group">
-        <Link to={'/random_destinations'}><button className="btn btn-default" onClick={this.handleClick}>Search</button></Link>
-        </div>
-      </form>
+      <div className="dateBoxes">
+        <form className="form-horizontal">
+          <div className="form-group">
+            <label for="departure-date" className="control-label">Departing on:</label>
+            <input id="departure-date" className="dateBox form-control col-sm-2" type="text" value={(new Date(this.props.departureDate)).toString().slice(0,15)} readOnly></input>
+          </div>
+          <div className="form-group">
+            <label for="return-date" className="control-label">Returning on:</label>
+            <input id="return-date" className="dateBox form-control col-sm-2" type="text" value={(new Date(this.props.arrivalDate)).toString().slice(0,15)} readOnly></input>
+          </div>
+          <div className="form-group">
+          <Link to={'/random_destinations'}><button className="btn btn-default" onClick={this.handleClick}>Search</button></Link>
+          </div>
+        </form>
+      </div>
     )
   }
 });
