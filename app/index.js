@@ -13,7 +13,7 @@ var App = React.createClass({
 
   render: function() {
     return (
-      <div className="container-fluid">
+      <div className="container-fluid mainContainer">
         <Header className="row"/>
         {this.props.children}
       </div>

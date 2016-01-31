@@ -12,6 +12,9 @@ const Destinations = React.createClass({
       originAirport: "",
       destination: '',
       destinationAirport: "",
+      destinationImgUrl: '',
+      destinationImgAlt: '',
+      destinationInfo: '',
       departureDate: localStorage.getItem("departureDate"),
       webFormatedDepartureDate: '',
       returnDate: localStorage.getItem("arrivalDate"),
@@ -29,7 +32,10 @@ const Destinations = React.createClass({
       console.log('random destination airport: ' + destinationObj["airportCode"]);
       this.setState({
         destinationAirport: destinationObj["airportCode"],
-        destination: destinationObj["cityName"]
+        destination: destinationObj["cityName"],
+        destinationImgUrl: destinationObj["imgUrl"],
+        destinationImgAlt: destinationObj["imgDescription"],
+        destinationInfo: destinationObj["cityDescription"]
       });
     });
   },
@@ -132,13 +138,17 @@ const Destinations = React.createClass({
 
     return (
       <div>
-        <h3>Origin: {this.state.origin}</h3>
-        <h3>Departure Date: {this.state.departureDate}</h3>
-        <h3>Return Date: {this.state.returnDate}</h3>
         <h3>Destination: {this.state.destination}</h3>
-        <h3>Price: {this.state.price}</h3>
-        <button onClick={this.searchNewDestination} className="btn btn-default">New Destination</button>
-        <a href={this.state.detailsUrl} target="_blank" className="btn btn-default">Book Now</a>
+        <img src={this.state.destinationImgUrl} alt={this.state.destinationImgAlt} className="cityImage"/>
+        <section className="cityInfo">
+          <p>{this.state.destinationInfo}</p>
+        </section>
+        <h4>Cheapest Flight: {this.state.price}</h4>
+        <h5>Origin: {this.state.origin}</h5>
+        <h5>Departure Date: {this.state.departureDate}</h5>
+        <h5>Return Date: {this.state.returnDate}</h5>
+        <button onClick={this.searchNewDestination} className="btn btn-default glyphicon glyphicon-remove"></button>
+        <a href={this.state.detailsUrl} target="_blank" ><button className="btn btn-default">Book Now</button></a>
         <ThingsToDo location={this.state.destination}
                     departureDate={this.state.startDate}
                     returnDate={this.state.returnDate}

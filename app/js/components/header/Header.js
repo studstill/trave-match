@@ -9,10 +9,10 @@ const Header = React.createClass({
     return (
       <nav className="navbar nav-tabs">
         <a className="navbar-brand" href="#">
-        <img className="img-responsive" alt="Brand" src="/app/images/logo.svg"></img>
+        Travel>Match> powered by
+        <img className="img-responsive expediaLogo" alt="Brand" src="/app/images/logo.svg"></img>
         </a>
         <Link to={'/origin_input'}  className="btn btn-default navbar-btn">Home</Link>
-        <Link to={'/random_destinations'} className="btn btn-default navbar-btn">Destination</Link>
       </nav>
     );
   }
