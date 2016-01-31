@@ -18,7 +18,7 @@ const Destinations = React.createClass({
   },
 
   componentDidMount(){
-    let destinationAirport = destinationArray[Math.floor(Math.random() * destinationArray.length - 1)];
+    let destinationAirport = destinationArray[Math.floor(Math.random() * destinationArray.length - 1)]["airportCode"];
     let origin = this.state.origin;
     let departDate = this.state.departureDate;
     let retDate = this.state.returnDate;
