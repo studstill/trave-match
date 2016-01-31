@@ -51,12 +51,18 @@ var Input = React.createClass({
   render: function(){
     return (
       <div>
-        <input onChange={this.handlePointOfOrigin} placeholder='Point of Origin'></input>
+        <form className="form-inline">
+          <div className="form-group">
+          <label for="origin_input">Flying from: </label>
+          <input id="origin_input" className="form-control" onChange={this.handlePointOfOrigin} placeholder='Enter Origin City'></input>
+          </div>
+        </form>
         <DateRange
           calendars="1"
           onInit={this.handleDateRange}
           onChange={this.handleDateRange}
           className="container-fluid"
+          width="100%"
         />
       </div>
     )
@@ -71,12 +77,19 @@ var Output = React.createClass({
   },
   render: function(){
     return (
-      <div className="row">
-        <div>departing</div><div >returning</div>
-        <input type="text" value={(new Date(this.props.departureDate)).toString().slice(0,15)}></input>
-        <input type="text" value={(new Date(this.props.arrivalDate)).toString().slice(0,15)}></input>
-        <button onClick={this.handleClick}><Link to={'/random_destinations'}>Search</Link></button>
-      </div>
+      <form className="form-horizontal">
+        <div className="form-group">
+          <label for="departure-date" class="col-sm-2 control-label">Departing on:</label>
+          <input id="departure-date" className="form-control col-sm-2" type="text" value={(new Date(this.props.departureDate)).toString().slice(0,15)} readOnly></input>
+        </div>
+        <div className="form-group">
+          <label for="return-date" class="col-sm-2 control-label">Returning on:</label>
+          <input id="return-date" className="form-control col-sm-2" type="text" value={(new Date(this.props.arrivalDate)).toString().slice(0,15)} readOnly></input>
+        </div>
+        <div className="form-group">
+        <button className="btn btn-default" onClick={this.handleClick}><Link to={'/random_destinations'}>Search</Link></button>
+        </div>
+      </form>
     )
   }
 });
