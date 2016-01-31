@@ -2,6 +2,7 @@ import React from 'react';
 import {RouteHandler, Link} from 'react-router';
 import destinationArray from './destinationArray.js'
 import request from 'superagent';
+import ThingsToDo from './ThingsToDo.js'
 
 const Destinations = React.createClass({
 
@@ -194,7 +195,10 @@ const Destinations = React.createClass({
         <h3>Price: {this.state.price}</h3>
         <button onClick={this.searchNewDestination}>New Destination</button>
         <a href={this.state.detailsUrl} target="_blank">Book Now</a>
-
+        <ThingsToDo location={this.state.destination}
+                    departureDate={this.state.startDate}
+                    returnDate={this.state.returnDate}
+                    />
       </div>
     )
   }
